@@ -89,6 +89,6 @@ def parallel_plot():
 
 	
 
-# merged_bar_plot()
-# lineplot ()
+merged_bar_plot()
+lineplot ()
 parallel_plot()
