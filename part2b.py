@@ -94,13 +94,38 @@ def StarPlot_State_Age():
 # reference http://benalexkeen.com/parallel-coordinates-in-matplotlib/
 def parallel_plot_state_ages():
     df=pd.read_csv("data/congress_by_age.csv")
-    df = df.drop(['bioguide', 'firstname', 'lastname', 'middlename', 'suffix', 'birthday', 'termstart'], axis =1)
+    df = df.drop(['bioguide', 'firstname', 'lastname', 'middlename', 'suffix', 'birthday'], axis =1)
+
+    df['party'] = df['party'].astype('category')
+    df['congress'] = df['congress'].astype('category')
+    df['chamber'] = df['chamber'].astype('category')
+    df['state'] = df['state'].astype('category')
+    df['incumbent'] = df['incumbent'].astype('category')
+    df['termstart'] = df['termstart'].astype('category')
+
+    data = df.sample(n = 100)
+    data['party'] = data['party'].cat.codes
+    data['congress'] = data['congress'].cat.codes
+    data['chamber'] = data['chamber'].cat.codes
+    data['state'] = data['state'].cat.codes
+    data['incumbent'] = data['incumbent'].cat.codes
+    data['termstart'] = data['termstart'].cat.codes
+    
+    plt.figure()
+    pd.plotting.parallel_coordinates(data, 'incumbent', color=["red", "blue"], alpha=0.2)
+    plt.title("Parallel Coordinates plotting to visualize the dataset")
+    plt.show()
+    
+
+   
+def plot_2():
+    df=pd.read_csv("data/congress_by_age.csv")
+    df = df.drop(['bioguide', 'firstname', 'lastname', 'middlename', 'suffix', 'birthday'], axis =1)
 
     # df = df.sample(n=100)
-    # df.party = df.party.replace({"R":0 ,"D": 10,"I":20, "AL":30,'L':40,'ID':50})
+    df.party = df.party.replace({"R":0 ,"D": 10,"I":20, "AL":30,'L':40,'ID':50})
     df.incumbent = df.incumbent.replace({"Yes":0,"No":80})
     df.chamber = df.chamber.replace({"house":25,"senate":75})
-
     pd.to_numeric('party',errors='coerce')
     pd.to_numeric('chamber',errors='coerce')
     pd.to_numeric('congress',errors='coerce')
@@ -112,7 +137,6 @@ def parallel_plot_state_ages():
         'party', color=['yellow','orange','blue','green','red','black'])
     plt.show()
 
-
-StarPlot_State_Age()
+# StarPlot_State_Age()
 parallel_plot_state_ages()
 # plt.show()
